@@ -1,0 +1,37 @@
+.chat {
+  position: relative;
+  height: 300px;
+  border: solid thin rgba(black, 0.5);
+}
+
+.chat .history {
+  list-style-type: none;
+  margin: 0;
+  padding: 10px;
+  overflow-x: auto;
+  height: 250px;
+
+  li {
+    margin: 10px 5px;
+  }
+}
+
+.chat .control {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 50px;
+  border-top: solid thin rgba(black, 0.5);
+
+  input {
+    width: 80%;
+    height: 100%;
+    padding: 10px;
+    border-right: solid thin rgba(black, 0.5);
+  }
+
+  button {
+    width: 20%;
+    height: 100%;
+  }
+}
