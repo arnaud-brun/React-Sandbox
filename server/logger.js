@@ -9,6 +9,9 @@ const divider = chalk.gray('\n-----------------------------------');
  * Logger middleware, you can customize it to make messages more personal
  */
 const logger = {
+  log: (msg) => {
+    console.log(msg);
+  },
 
   // Called whenever there's an error on the server we want to print
   error: (err) => {
