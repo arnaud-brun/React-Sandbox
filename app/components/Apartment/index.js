@@ -6,9 +6,11 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Carousel from 'react-bootstrap/lib/Carousel';
-import { FormattedMessage } from 'react-intl';
+import Grid from 'react-bootstrap/lib/Grid';
+import Col from 'react-bootstrap/lib/Col';
+import Row from 'react-bootstrap/lib/Row';
 
+import { FormattedMessage } from 'react-intl';
 
 import messages from './messages';
 import './apartment.scss';
@@ -52,39 +54,85 @@ class Apartment extends React.PureComponent { // eslint-disable-line react/prefe
     )
   }
 
-  renderAptData(aptData) {
-    const data = Object.keys(aptData).map( (key, index) => {
-      const field = key;
-      const value = aptData[key];
-      if (field === 'id') {
-        return;
-      }
-
-      if (field === 'pictures') {
-        return (
-          <div key={index}>
-            <h2>{field}</h2>
-            {this.renderPictures(value)}
-          </div>
-        )
-      }
-      return (
-        <div key={index}>
-          <h2>{field}</h2>
-          <p>{value}</p>
-        </div>
-      );
-    });
-    return data;
+  renderTitle(title) {
+    return (
+      <h1>{title}</h1>
+    )
   }
-
   renderPictures(picturesUrl) {
     return (
       <div className={'apt-pictures'}>
         {picturesUrl.map( url => <img src={url}></img> )}
       </div>
+    );
+  }
+  renderMainSmallData(nbPeople, nbBeds, area) {
+    return (
+      <div className={'apt-data'}>
+        <div className='apt-data-icon'>
+          <i className="fas fa-user"></i>
+          <span>{nbPeople}</span>
+        </div>
+        <div className='apt-data-icon'>
+          <i className="fas fa-bed"></i>
+          <span>{nbBeds}</span>
+        </div>
+        <div className='apt-data-icon'>
+          <i className="far fa-square"></i>
+          <span>{area}</span>
+        </div>
+      </div>
+    );
+  }
+  renderDescription(description) {
+    return (
+      <div className='apt-description'>
+        <h2>Description</h2>
+        <p>{description}</p>
+      </div>
+    );
+  }
+  renderSideSmallData(wifi, carParc) {
+    return (
+      <div className='apt-data'>
+        <div className='apt-data-icon'>
+          <i className="fas fa-wifi"></i>
+          <span>{wifi ? 'oui' : 'non'}</span>
+        </div>
+        <div className='apt-data-icon'>
+          <i className="fas fa-car"></i>
+          <span>{carParc ? 'oui' : 'non'}</span>
+        </div>
+      </div>
     )
   }
+
+  renderAptData(apt) {
+    return (
+      <div>
+        {this.renderPictures(apt.pictures)}
+        <Grid>
+          <Row className="show-grid">
+            <Col md={8}>
+              <div className="apt">
+                {this.renderTitle(apt.title)}
+                {this.renderMainSmallData(apt.nbPeople, apt.nbBeds, apt.area)}
+                {this.renderDescription(apt.description)}
+                {this.renderSideSmallData(apt.wifi, apt.carPark)}
+              </div>
+            </Col>
+            <Col md={4}>
+              <div className="order">
+                <p>Partie réservée à la réservation</p>
+              </div>
+            </Col>
+          </Row>
+        </Grid>
+      </div>
+    )
+  }
+
+
 
   render() {
     if (this.props.grid) {
@@ -95,7 +143,6 @@ class Apartment extends React.PureComponent { // eslint-disable-line react/prefe
       let apt = this.props.location.state.apartmentData;
       return (
         <div>
-          <FormattedMessage {...messages.header} />
           {this.renderAptData(apt)}
         </div>
       );
@@ -106,10 +153,6 @@ class Apartment extends React.PureComponent { // eslint-disable-line react/prefe
         <FormattedMessage {...messages.header} />
       </div>
     );
-
-    // Relative descriptions
-
-    // Map
   }
 }
 
