@@ -59,10 +59,11 @@ class Apartment extends React.PureComponent { // eslint-disable-line react/prefe
       <h1>{title}</h1>
     )
   }
-  renderPictures(picturesUrl) {
+  renderPictures(id, picturesUrl) {
+    const keyBase = 'apt-'+id+'-';
     return (
       <div className={'apt-pictures'}>
-        {picturesUrl.map( url => <img src={url}></img> )}
+        {picturesUrl.map( (url, index) => <img key={keyBase+index} src={url}></img> )}
       </div>
     );
   }
@@ -110,7 +111,7 @@ class Apartment extends React.PureComponent { // eslint-disable-line react/prefe
   renderAptData(apt) {
     return (
       <div>
-        {this.renderPictures(apt.pictures)}
+        {this.renderPictures(apt.id, apt.pictures)}
         <Grid>
           <Row className="show-grid">
             <Col md={8}>
