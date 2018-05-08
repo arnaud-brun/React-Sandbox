@@ -31,6 +31,9 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
             <NavItem eventKey={0} href="/chat">
               <FormattedMessage {...messages.chatLink} />
             </NavItem>
+            <NavItem eventKey={1} href="/booking">
+              <FormattedMessage {...messages.bookingLink} />
+            </NavItem>
             <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
               <MenuItem eventKey={3.1}>Action</MenuItem>
               <MenuItem eventKey={3.2}>Another action</MenuItem>

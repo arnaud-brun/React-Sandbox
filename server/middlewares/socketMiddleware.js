@@ -11,7 +11,6 @@ module.exports = (app, port, logger) => {
   // Create a chat on '/chat' with specific event
   const chat = io.of('/chat');
   const chatEvent = 'SOCKET_CHAT_EVENT';
-
   chat.on('connection', (socket) => {
     socket.broadcast.emit('New user connected');
     socket.on(chatEvent, (message) => {

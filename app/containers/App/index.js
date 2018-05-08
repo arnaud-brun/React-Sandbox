@@ -16,8 +16,10 @@ import { Switch, Route } from 'react-router-dom';
 
 import Header from 'components/Header';
 import Chat from 'containers/Chat/Loadable';
+import Apartment from 'components/Apartment';
 import HomePage from 'containers/HomePage/Loadable';
 import NotFoundPage from 'containers/NotFoundPage/Loadable';
+import BookingPage from 'containers/BookingPage/Loadable';
 
 export default function App() {
   return (
@@ -26,6 +28,8 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/chat" component={Chat} />
+        <Route exact path="/booking" component={BookingPage} />
+        <Route path="/booking/apartment/:id" component={Apartment} />
         <Route component={NotFoundPage} />
       </Switch>
     </div>

@@ -14,4 +14,8 @@ export default defineMessages({
     id: 'app.components.Header.chatLink',
     defaultMessage: 'Chat',
   },
+  bookingLink: {
+    id: 'app.components.Header.bookingLink',
+    defaultMessage: 'Booking',
+  }
 });

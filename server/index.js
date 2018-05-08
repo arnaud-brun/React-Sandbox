@@ -15,6 +15,35 @@ const app = express();
 // app.use('/api', myApi);
 require('./middlewares/socketMiddleware')(app, 80, logger);
 
+const appartments = require('./middlewares/fakerMiddleware')();
+
+app.get('/getBookingData', (req, res, next) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify({bookingData: appartments}));
+});
+
+// app.get('/getBookingData/image/:url', (req, res, next) => {
+//   logger.log('sending back file')
+//   const options = {
+//     root: __dirname + '/data/',
+//     dotfiles: 'deny',
+//     headers: {
+//         'x-timestamp': Date.now(),
+//         'x-sent': true
+//     }
+//   };
+//
+//   const fileName = req.params.url;
+//
+//   res.sendFile('image.jpg', options, (err) => {
+//     if (err) {
+//       logger.error('Error in file transfert');
+//     } else {
+//       logger.log('file sent');
+//     }
+//   });
+// });
+
 // In production we need to pass these values in instead of relying on webpack
 setup(app, {
   outputPath: resolve(process.cwd(), 'build'),
