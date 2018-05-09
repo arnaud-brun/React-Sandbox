@@ -57,25 +57,20 @@ class Map extends React.Component {
    });
  };
 
-  handleClick(event) {
-    console.log(event);
+ _putMarker(lng, lat) {
+   const marker = Object.assign({}, this.state.marker, {
+     longitude: lng,
+     latitude: lat,
+   });
+   this.setState({
+     marker,
+   });
+ }
+
+  handleMapClick(event) {
     const lng = event.lngLat[0];
     const lat = event.lngLat[1];
-    // const viewport = Object.assign({}, this.state.viewport, {
-    //   longitude: lng,
-    //   latitude: lat,
-    //   zoom: 11,
-    //   transitionInterpolator: new FlyToInterpolator(),
-    //   transitionDuration: 250,
-    // })
-    const marker = Object.assign({}, this.state.marker, {
-      longitude: lng,
-      latitude: lat,
-    });
-    this.setState({
-      marker,
-      // viewport,
-    });
+    this._putMarker(lng, lat);
   }
 
   render() {
@@ -92,14 +87,11 @@ class Map extends React.Component {
         {...this.state.viewport}
         mapStyle="mapbox://styles/mapbox/dark-v9"
         dragToRotate={false}
-        onClick={(event) => this.handleClick(event)}
+        onClick={(event) => this.handleMapClick(event)}
         mapboxApiAccessToken={this.state.mapBoxToken}
         onViewportChange={(viewport) => this._onViewportChange(viewport)}
       >
-        <Marker
-          latitude={this.state.marker.latitude}
-          longitude={this.state.marker.longitude}
-          >
+        <Marker {...this.state.marker} >
           <Pin size={20} />
         </Marker>
       </ReactMapGL>
