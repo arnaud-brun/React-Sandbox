@@ -24,14 +24,13 @@ app.get('/getBookingData', (req, res, next) => {
 
 
 
+// If the api_keys.env file doesn't exist in the root top level, create it
+// it contains the following fields
+//    MAPBOX_TOKEN
 const dotenv = require('dotenv').config({path: 'api_keys.env'});
-
 app.get('/getMapBoxToken', (req, res, next) => {
-  const MAPBOX_TOKEN = process.env.MAPBOX_TOKEN;
-  console.log('dotenv', dotenv, 'MAPBOX_TOKEN', MAPBOX_TOKEN );
-  // console.log('process.env', process.env);
   res.setHeader('Content-Type', 'application/json');
-  res.send(JSON.stringify({token: MAPBOX_TOKEN}));
+  res.send(JSON.stringify({token: process.env.MAPBOX_TOKEN}));
 });
 // app.get('/getBookingData/image/:url', (req, res, next) => {
 //   logger.log('sending back file')
