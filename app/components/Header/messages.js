@@ -17,5 +17,9 @@ export default defineMessages({
   bookingLink: {
     id: 'app.components.Header.bookingLink',
     defaultMessage: 'Booking',
+  },
+  mapLink: {
+    id: 'app.components.Header.mapLink',
+    defaultMessage: 'Map',
   }
 });

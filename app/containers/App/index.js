@@ -15,6 +15,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
 import Header from 'components/Header';
+import Map from 'components/Map';
 import Chat from 'containers/Chat/Loadable';
 import Apartment from 'components/Apartment';
 import HomePage from 'containers/HomePage/Loadable';
@@ -28,6 +29,7 @@ export default function App() {
       <Switch>
         <Route exact path="/" component={HomePage} />
         <Route exact path="/chat" component={Chat} />
+        <Route exact path="/map" component={Map} />
         <Route exact path="/booking" component={BookingPage} />
         <Route path="/booking/apartment/:id" component={Apartment} />
         <Route component={NotFoundPage} />
