@@ -12,9 +12,6 @@ import messages from './messages';
 import ReactMapGL from 'react-map-gl';
 import { MAPBOX_TOKEN_URL } from './constants.js';
 
-// const MAPBOX_TOKEN = 'pk.eyJ1IjoiYXJuYWF1ZC1icnVuIiwiYSI6ImNqZ3lyd29rMzA1NGYycW13bmsyODd4NWcifQ.Fc0VykkzmQiAqwTbkkxLsQ'; // Set your mapbox token here
-const MAPBOX_TOKEN = '';
-
 class Map extends React.Component {
   constructor(props) {
     super(props);
