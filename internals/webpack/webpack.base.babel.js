@@ -116,6 +116,9 @@ module.exports = (options) => ({
       'jsnext:main',
       'main',
     ],
+    alias: {
+      'mapbox-gl$': path.join('/node_modules/', '/mapbox-gl/dist/mapbox-gl.js'),
+    },
   },
   devtool: options.devtool,
   target: 'web', // Make web variables accessible to webpack, e.g. window
