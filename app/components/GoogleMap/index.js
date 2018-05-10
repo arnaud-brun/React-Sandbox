@@ -18,16 +18,19 @@ import {
 } from "react-google-maps";
 
 
-import { GOOGLE_MAPS_API_URL, GOOGLE_PLACES_API_URL} from './constants.js';
+import {
+  GOOGLE_MAPS_API_URL,
+  GOOGLE_PLACES_API_URL,
+  ACCESS_GOOGLE_PLACES
+} from './constants.js';
 
-const MapWithAMarker = withScriptjs(withGoogleMap(props =>
+const Map = withScriptjs(withGoogleMap(props =>
   <GoogleMap
-    defaultZoom={8}
-    defaultCenter={{ lat: -34.397, lng: 150.644 }}
+    {...props}
   >
-    <Marker
-      position={{ lat: -34.397, lng: 150.644 }}
-    />
+    {props.renderMarker()}
+
+    {props.renderPlaces()}
   </GoogleMap>
 ));
 
@@ -40,10 +43,17 @@ class MyGoogleMap extends React.PureComponent { // eslint-disable-line react/pre
       apiKey: {
         maps: null,
         places: null,
-      }
+      },
+      mapComponent: {
+        defaultZoom:15,
+        defaultCenter: { lat: 49.1146043873578, lng: 6.176324177575793 },
+      },
+      marker: {
+        position: { lat: 49.1146043873578, lng: 6.176324177575793 },
+      },
+      places: [],
     }
   }
-
   componentWillMount() {
     fetch(GOOGLE_MAPS_API_URL)
     .then(response => response.json())
@@ -53,43 +63,102 @@ class MyGoogleMap extends React.PureComponent { // eslint-disable-line react/pre
       });
       this.setState({ apiKey });
     });
+  }
 
-    fetch(GOOGLE_PLACES_API_URL)
+  getPlaces(latLng) {
+    const placesUrl = ACCESS_GOOGLE_PLACES + '/' + latLng.lat + '/' + latLng.lng;
+    const fetchOptions = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      }
+    };
+    fetch(placesUrl, fetchOptions)
     .then(response => response.json())
     .then(data => {
-      const apiKey = Object.assign({}, this.state.apiKey, {
-        places: data.key,
-      });
-      this.setState({ apiKey });
+      if(data.error) {
+        console.log('error detected');
+      } else {
+        this.setState({
+          places: data.places,
+        });
+      }
     });
   }
 
-  onClick() {
-    // fetch the nearby industries according to the location
-    // move the Marker
+  updateMapCenter(latLng) {
+    const mapComponent = Object.assign({}, this.state.mapComponent, {
+      defaultCenter: latLng,
+    });
+    this.setState({
+      mapComponent,
+    });
+  }
+
+  moveMarker(latLng) {
+    const marker = Object.assign({}, this.state.marker, {
+      position: latLng,
+    });
+    this.setState({
+      marker,
+    });
+  }
+
+  handleClick(event) {
+    const latLng = {
+      lat: event.latLng.lat(),
+      lng: event.latLng.lng(),
+    };
+    this.getPlaces(latLng);
+    this.updateMapCenter(latLng);
+    this.moveMarker(latLng);
+  }
+
+  renderMarker() {
+    return (
+      <Marker defaultPosition={this.state.marker.position}/>
+    )
+  }
+  renderPlaces() {
+    if (this.state.places.length == 0) {
+      return;
+    }
+
+    const places = this.state.places.map((place, index) => {
+      console.log(index, place);
+      const position = {...place.geometry.location};
+
+      return (
+        <Marker defaultPosition={position} />
+      )
+    });
+    return places;
   }
 
   render() {
-
-    if (this.state.apiKey.maps) {
-      let gmapUrl = 'https://maps.googleapis.com/maps/api/js?key=';
-      gmapUrl += this.state.apiKey.maps;
-      gmapUrl += '&v=3.exp&libraries=geometry,drawing,places';
+    if (!this.state.apiKey.maps) {
       return (
-        <MapWithAMarker
-          googleMapURL={gmapUrl}
-          loadingElement={<div style={{ height: `100%` }} />}
-          containerElement={<div style={{ height: `400px` }} />}
-          mapElement={<div style={{ height: `100%` }} />}
-          />
-      );
+        <div>
+          Loading
+        </div>
+      )
     }
 
+    let gmapUrl = 'https://maps.googleapis.com/maps/api/js?key=';
+    gmapUrl += this.state.apiKey.maps;
+    gmapUrl += '&v=3.exp&libraries=geometry,drawing,places';
     return (
-      <div>
-        Loading
-      </div>
-    )
+      <Map
+        googleMapURL={gmapUrl}
+        loadingElement={<div style={{ height: `100%` }} />}
+        containerElement={<div style={{ height: `400px` }} />}
+        mapElement={<div style={{ height: `100%` }} />}
+        onClick={(event) => this.handleClick(event)}
+        renderMarker={() => this.renderMarker()}
+        renderPlaces={() => this.renderPlaces()}
+        {...this.state.mapComponent}
+        />
+    );
   }
 }
 
