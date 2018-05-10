@@ -15,7 +15,7 @@ import { MAPBOX_TOKEN_URL } from './constants.js';
 
 import Pin from './pin';
 
-class Map extends React.Component {
+class MapBox extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -99,4 +99,4 @@ class Map extends React.Component {
   }
 }
 
-export default Map;
+export default MapBox;

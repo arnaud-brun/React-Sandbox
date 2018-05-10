@@ -19,23 +19,27 @@ import saga from './saga';
 import messages from './messages';
 
 
-
-import Map from 'components/Map';
-import MyGoogleMap from 'components/GoogleMap';
+import './mapPage.scss';
+import MapBox from 'components/MapBox';
+// import MyGoogleMap from 'components/GoogleMap';
 
 
 export class MapPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   render() {
     return (
       <div>
-        <FormattedMessage {...messages.header} />
-        <Map />
-        <MyGoogleMap />
+        <div className='map-container'>
+          <h2>MapBox widget</h2>
+          <MapBox />
+        </div>
       </div>
     );
   }
 }
 
+// <div>
+//   <MyGoogleMap />
+// </div>
 MapPage.propTypes = {
   dispatch: PropTypes.func.isRequired,
 };
