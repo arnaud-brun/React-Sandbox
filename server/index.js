@@ -32,6 +32,16 @@ app.get('/getMapBoxToken', (req, res, next) => {
   res.setHeader('Content-Type', 'application/json');
   res.send(JSON.stringify({token: process.env.MAPBOX_TOKEN}));
 });
+
+app.get('/getGoogleMapApiKey', (req, res, next) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify({key: process.env.GOOGLE_MAP_API}));
+});
+
+app.get('/getGooglePlacesApiKey', (req, res, next) => {
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify({key: process.env.GOOGLE_PLACES_API}));
+});
 // app.get('/getBookingData/image/:url', (req, res, next) => {
 //   logger.log('sending back file')
 //   const options = {
