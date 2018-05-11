@@ -19,8 +19,7 @@ import {
 
 
 import {
-  GOOGLE_MAPS_API_URL,
-  GOOGLE_PLACES_API_URL,
+  GOOGLE_MAPS_KEY_URL,
   ACCESS_GOOGLE_PLACES
 } from './constants.js';
 
@@ -39,10 +38,22 @@ const Map = withScriptjs(withGoogleMap(props =>
 class MyGoogleMap extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
+
+    let mapsUrl = GOOGLE_MAPS_KEY_URL;
+    let placesUrl = ACCESS_GOOGLE_PLACES;
+    if (this.props.route) {
+        mapsUrl = this.props.route + GOOGLE_MAPS_KEY_URL;
+        placesUrl = this.props.route + ACCESS_GOOGLE_PLACES;
+    }
+
     this.state = {
       apiKey: {
         maps: null,
         places: null,
+      },
+      apiUrl: {
+        maps: mapsUrl,
+        places: placesUrl,
       },
       mapComponent: {
         defaultZoom:15,
@@ -55,7 +66,9 @@ class MyGoogleMap extends React.PureComponent { // eslint-disable-line react/pre
     }
   }
   componentWillMount() {
-    fetch(GOOGLE_MAPS_API_URL)
+    console.log('this.state.apiUrl.maps', this.state.apiUrl.maps)
+
+    fetch(this.state.apiUrl.maps)
     .then(response => response.json())
     .then(data => {
       const apiKey = Object.assign({}, this.state.apiKey, {
@@ -66,7 +79,7 @@ class MyGoogleMap extends React.PureComponent { // eslint-disable-line react/pre
   }
 
   getPlaces(latLng) {
-    const placesUrl = ACCESS_GOOGLE_PLACES + '/' + latLng.lat + '/' + latLng.lng;
+    const placesUrl = this.state.apiUrl.places + '/' + latLng.lat + '/' + latLng.lng;
     const fetchOptions = {
       method: 'GET',
       headers: {

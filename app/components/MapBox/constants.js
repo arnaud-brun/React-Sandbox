@@ -1,1 +1,1 @@
-export const MAPBOX_TOKEN_URL = '/getMapBoxToken';
+export const MAPBOX_KEY_URL = '/getMapBoxKey';

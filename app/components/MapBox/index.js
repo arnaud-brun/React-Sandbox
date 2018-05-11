@@ -11,15 +11,21 @@ import messages from './messages';
 
 import ReactMapGL, {Marker, FlyToInterpolator} from 'react-map-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
-import { MAPBOX_TOKEN_URL } from './constants.js';
+import { MAPBOX_KEY_URL } from './constants.js';
 
 import Pin from './pin';
 
 class MapBox extends React.Component {
   constructor(props) {
     super(props);
+    let mapBoxUrl = MAPBOX_KEY_URL;
+    if (this.props.route) {
+      mapBoxUrl = this.props.route + MAPBOX_KEY_URL;
+    }
+
     this.state = {
       isLoading: true,
+      mapBoxUrl,
       mapBoxToken: null,
       viewport: {
         latitude: 37.7751,
@@ -38,9 +44,9 @@ class MapBox extends React.Component {
   }
 
   componentDidMount() {
-    fetch(MAPBOX_TOKEN_URL)
+    fetch(this.state.mapBoxUrl)
     .then(response => response.json())
-    .then(data => this.setState({ mapBoxToken: data.token, isLoading: false }));
+    .then(data => this.setState({ mapBoxToken: data.key, isLoading: false }));
   }
 
   _onViewportChange = viewport => this.setState({

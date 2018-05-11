@@ -22,6 +22,7 @@ import messages from './messages';
 import './mapPage.scss';
 import MapBox from 'components/MapBox';
 import MyGoogleMap from 'components/GoogleMap';
+import { MAP_ROUTE } from './constants.js';
 
 
 export class MapPage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -30,11 +31,11 @@ export class MapPage extends React.PureComponent { // eslint-disable-line react/
       <div>
         <div className='map-container'>
           <h2>MapBox widget</h2>
-          <MapBox />
+          <MapBox route={MAP_ROUTE}/>
         </div>
         <div className='map-container'>
           <h2>GoogleMap widget</h2>
-          <MyGoogleMap />
+          <MyGoogleMap route={MAP_ROUTE}/>
         </div>
       </div>
     );

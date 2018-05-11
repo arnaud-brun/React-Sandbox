@@ -1,21 +1,23 @@
 /**
- * Faker middleware
+ * Fake Booking middleware
  */
-
 const faker = require('faker');
 
-class Appartment {
+const AREA_MIN = 25;
+const AREA_MAX = 150;
+const BEDS_MIN = 2;
+const BEDS_MAX = 10;
+const NB_PICTURES = 5;
+const PEOPLE_MIN = 1;
+const PEOPLE_MAX = 10;
+const PRICE_MIN = 25;
+const PRICE_MAX = 250;
+const ROOMS_MIN = 2;
+const ROOMS_MAX = 10;
+
+class Apartment {
   constructor(index) {
-    this.index = index;
-    this.nbPictures = 5;
-    this.areaMin = 25;
-    this.areaMax = 150;
-    this.peopleMax = 10;
-    this.bedsMax = 7;
-    this.roomsMax = 5;
-
-
-    this.appartment = {
+    this.apartment = {
       id: this.index,
       title: this.getTitle(),
       description: this.getDescription(),
@@ -31,8 +33,8 @@ class Appartment {
     }
   }
 
-  getAppartment() {
-    return this.appartment;
+  getApartment() {
+    return this.apartment;
   }
 
   getTitle() {
@@ -45,7 +47,7 @@ class Appartment {
 
   getPictures() {
     let pictures = [];
-    for(let i=0; i<this.nbPictures; i++) {
+    for(let i=0; i < NB_PICTURES; i++) {
       pictures.push('https://picsum.photos/500/500/?random');
     }
     return pictures;
@@ -56,23 +58,23 @@ class Appartment {
   }
 
   getArea() {
-    return Math.floor(Math.random() * (this.areaMax - this.areaMin) + this.areaMin);
+    return Math.floor(Math.random() * (AREA_MAX - AREA_MIN) + AREA_MIN);
   }
 
   getPeople() {
-    return Math.floor(Math.random() * (this.peopleMax - 1) + 1);
+    return Math.floor(Math.random() * (PEOPLE_MAX - PEOPLE_MIN) + PEOPLE_MIN);
   }
 
   getBeds() {
-    return Math.floor(Math.random() * (this.bedsMax - 1) + 1);
+    return Math.floor(Math.random() * (BEDS_MAX - BEDS_MIN) + BEDS_MIN);
   }
 
   getRooms() {
-    return Math.floor(Math.random() * (this.roomsMax - 1) + 1);
+    return Math.floor(Math.random() * (ROOMS_MAX - ROOMS_MIN) + ROOMS_MIN);
   }
 
   getPrice() {
-    return Math.floor(Math.random() * (150 - 50) + 50);
+    return Math.floor(Math.random() * (PRICE_MAX - PRICE_MIN) + PRICE_MIN);
   }
 
   getBoolean() {
@@ -80,11 +82,12 @@ class Appartment {
   }
 }
 
-
-module.exports = () => {
-  let appartments = [];
+module.exports = (req, res, next) => {
+  let apartments = [];
   for (let i=0; i<10; i++) {
-    appartments.push(new Appartment(i).getAppartment());
+    apartments.push(new Apartment(i).getApartment());
   }
-  return appartments;
+
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify({bookingData: apartments}));
 };
