@@ -5,59 +5,30 @@
 */
 
 import React from 'react';
-// import styled from 'styled-components';
-
 import { FormattedMessage } from 'react-intl';
 import messages from './messages';
-
-import {
-  withScriptjs,
-  withGoogleMap,
-  GoogleMap,
-  Marker,
-} from "react-google-maps";
-
+import Map from './map';
 
 import {
   GOOGLE_MAPS_KEY_URL,
   ACCESS_GOOGLE_PLACES
 } from './constants.js';
 
-const Map = withScriptjs(withGoogleMap(props =>
-  <GoogleMap
-    {...props}
-  >
-    {props.renderMarker()}
-
-    {props.renderPlaces()}
-  </GoogleMap>
-));
-
-
-
 class MyGoogleMap extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
     super(props);
-
-    let mapsUrl = GOOGLE_MAPS_KEY_URL;
-    let placesUrl = ACCESS_GOOGLE_PLACES;
-    if (this.props.route) {
-        mapsUrl = this.props.route + GOOGLE_MAPS_KEY_URL;
-        placesUrl = this.props.route + ACCESS_GOOGLE_PLACES;
-    }
-
     this.state = {
-      apiKey: {
-        maps: null,
-        places: null,
-      },
-      apiUrl: {
-        maps: mapsUrl,
-        places: placesUrl,
+      apiUrl: this.setUrls(this.props.route),
+      map: {
+        apiKey: null,
+        googleMapURL: null,
+        defaultZoom:15,
+        center: { lat: 49.1146043873578, lng: 6.176324177575793 },
       },
       mapComponent: {
-        defaultZoom:15,
-        defaultCenter: { lat: 49.1146043873578, lng: 6.176324177575793 },
+        loadingElement: (<div style={{ height: `100%` }} />),
+        containerElement: (<div style={{ height: `400px` }} />),
+        mapElement: (<div style={{ height: `100%` }} />),
       },
       marker: {
         position: { lat: 49.1146043873578, lng: 6.176324177575793 },
@@ -65,17 +36,40 @@ class MyGoogleMap extends React.PureComponent { // eslint-disable-line react/pre
       places: [],
     }
   }
-  componentWillMount() {
-    console.log('this.state.apiUrl.maps', this.state.apiUrl.maps)
 
+  componentWillMount() {
     fetch(this.state.apiUrl.maps)
     .then(response => response.json())
     .then(data => {
-      const apiKey = Object.assign({}, this.state.apiKey, {
-        maps: data.key,
+      const apiKey = data.key;
+      const googleMapURL = this.getGmapUrl(apiKey);
+      const map = Object.assign({}, this.state.map, {
+        apiKey,
+        googleMapURL,
       });
-      this.setState({ apiKey });
+      this.setState({ map });
     });
+  }
+
+  setUrls(route) {
+    let mapsUrl = GOOGLE_MAPS_KEY_URL;
+    let placesUrl = ACCESS_GOOGLE_PLACES;
+    if (route) {
+        mapsUrl = this.props.route + GOOGLE_MAPS_KEY_URL;
+        placesUrl = this.props.route + ACCESS_GOOGLE_PLACES;
+    }
+    return {
+      maps: mapsUrl,
+      places: placesUrl,
+    };
+  }
+
+  getGmapUrl(apiKey) {
+    let gmapUrl = 'https://maps.googleapis.com/maps/api/js?key=';
+    gmapUrl += apiKey;
+    gmapUrl += '&v=3.exp';
+    gmapUrl += '&libraries=geometry,drawing,places';
+    return gmapUrl;
   }
 
   getPlaces(latLng) {
@@ -99,20 +93,15 @@ class MyGoogleMap extends React.PureComponent { // eslint-disable-line react/pre
     });
   }
 
-  updateMapCenter(latLng) {
+  updateMapAndMarker(latLng) {
     const mapComponent = Object.assign({}, this.state.mapComponent, {
-      defaultCenter: latLng,
+      center: latLng,
     });
-    this.setState({
-      mapComponent,
-    });
-  }
-
-  moveMarker(latLng) {
     const marker = Object.assign({}, this.state.marker, {
       position: latLng,
     });
     this.setState({
+      mapComponent,
       marker,
     });
   }
@@ -123,53 +112,25 @@ class MyGoogleMap extends React.PureComponent { // eslint-disable-line react/pre
       lng: event.latLng.lng(),
     };
     this.getPlaces(latLng);
-    this.updateMapCenter(latLng);
-    this.moveMarker(latLng);
+    this.updateMapAndMarker(latLng);
   }
 
-  renderMarker() {
-    return (
-      <Marker defaultPosition={this.state.marker.position}/>
-    )
-  }
-  renderPlaces() {
-    if (this.state.places.length == 0) {
-      return;
-    }
-
-    const places = this.state.places.map((place, index) => {
-      console.log(index, place);
-      const position = {...place.geometry.location};
-
-      return (
-        <Marker defaultPosition={position} />
-      )
-    });
-    return places;
+  renderLoading() {
+    return(<div>Loading</div>);
   }
 
   render() {
-    if (!this.state.apiKey.maps) {
-      return (
-        <div>
-          Loading
-        </div>
-      )
+    if (this.state.map.apiKey == null || !this.state.map.googleMapURL == null) {
+      return this.renderLoading();
     }
 
-    let gmapUrl = 'https://maps.googleapis.com/maps/api/js?key=';
-    gmapUrl += this.state.apiKey.maps;
-    gmapUrl += '&v=3.exp&libraries=geometry,drawing,places';
     return (
       <Map
-        googleMapURL={gmapUrl}
-        loadingElement={<div style={{ height: `100%` }} />}
-        containerElement={<div style={{ height: `400px` }} />}
-        mapElement={<div style={{ height: `100%` }} />}
-        onClick={(event) => this.handleClick(event)}
-        renderMarker={() => this.renderMarker()}
-        renderPlaces={() => this.renderPlaces()}
         {...this.state.mapComponent}
+        {...this.state.map}
+        marker={this.state.marker}
+        places={this.state.places}
+        onClick={(event) => this.handleClick(event)}
         />
     );
   }
