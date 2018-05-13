@@ -19,7 +19,7 @@ map.get('/getNearbyPlaces/:lat/:lng', (req, res, next) => {
   let placesUrl = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json';
   placesUrl += '?location='+req.params.lat+','+req.params.lng;
   placesUrl += '&radius=500&type=restaurant&keyword=cruise';
-  placesUrl += '&key='+process.env.GOOGLE_PLACES_API;
+  placesUrl += '&key='+process.env.GOOGLE_PLACES_KEY;
 
   const fetchOptions = {
     method: 'GET',
