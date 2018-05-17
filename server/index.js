@@ -1,6 +1,7 @@
 /* eslint consistent-return:0 */
 
 const express = require('express');
+const bodyParser = require('body-parser');
 const logger = require('./logger');
 
 const argv = require('./argv');
@@ -10,6 +11,12 @@ const isDev = process.env.NODE_ENV !== 'production';
 const ngrok = (isDev && process.env.ENABLE_TUNNEL) || argv.tunnel ? require('ngrok') : false;
 const resolve = require('path').resolve;
 const app = express();
+
+// Set up body-parser
+app.use( bodyParser.json() );       // to support JSON-encoded bodies
+app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+  extended: true
+}));
 
 // If you need a backend, e.g. an API, add your custom backend-specific middleware here
 // app.use('/api', myApi);
@@ -21,8 +28,13 @@ require('./middlewares/socketMiddleware')(app, 80, logger);
 const dataMiddleware = require('./middlewares/fakeBookingMiddleware');
 app.use('/getBookingData', dataMiddleware);
 
+// Enable maps components
 const mapMiddleware = require('./middlewares/mapMiddleware');
 app.use('/map', mapMiddleware);
+
+// Enable authentication
+const authMiddleware = require('./middlewares/authMiddleware');
+app.use('/auth', authMiddleware);
 
 
 // In production we need to pass these values in instead of relying on webpack
