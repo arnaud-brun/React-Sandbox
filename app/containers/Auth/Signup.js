@@ -128,13 +128,22 @@ class Signup extends React.PureComponent { // eslint-disable-line react/prefer-s
     });
   }
 
+  renderStatus() {
+    return (
+      <div>Allright</div>
+    );
+  }
+
   render() {
     return (
       <div className='box'>
-        <form className='signup' onSubmit={(evt) => this.handleSubmit(evt)}>
-          <p>Sign up</p>
-          <div className='input'>
-            <span>Email</span>
+        <form className='form' onSubmit={(evt) => this.handleSubmit(evt)}>
+          <p className="title">Sign up</p>
+          <div className="status">
+            {this.renderStatus}
+          </div>
+          <div className='field'>
+            <p>Email</p>
             <input type="text"
               placeholder="Email"
               autoComplete='email'
@@ -143,8 +152,8 @@ class Signup extends React.PureComponent { // eslint-disable-line react/prefer-s
               />
             <p className="error">{this.state.errors.email}</p>
           </div>
-          <div className='input'>
-            <span>Username</span>
+          <div className='field'>
+            <p>Username</p>
             <input type="text"
               placeholder="Username"
               autoComplete="username"
@@ -153,8 +162,8 @@ class Signup extends React.PureComponent { // eslint-disable-line react/prefer-s
               />
             <p className="error">{this.state.errors.username}</p>
           </div>
-          <div className='input'>
-            <span>Password</span>
+          <div className='field'>
+            <p>Password</p>
             <input type="password"
               placeholder="Password"
               autoComplete="new-password"
@@ -162,8 +171,8 @@ class Signup extends React.PureComponent { // eslint-disable-line react/prefer-s
               onChange={(evt) => this.handleChange(evt, 'password')}
               />
           </div>
-          <div className='input'>
-            <span>Confirm password</span>
+          <div className='field'>
+            <p>Confirm password</p>
             <input type="password"
               placeholder="Confirm password"
               value={this.state.passwordCheck}
@@ -171,7 +180,14 @@ class Signup extends React.PureComponent { // eslint-disable-line react/prefer-s
               />
             <p className="error">{this.state.errors.password}</p>
           </div>
-          <div className='submit'>
+
+          <div className="field clause">
+            <p>
+              Some text you want to add to prevent user that he has to know the privacy policy etc...
+            </p>
+          </div>
+
+          <div className='field submit'>
             <button
               disabled={this.state.btnDisabled}>
               Submit

@@ -78,10 +78,10 @@ class Login extends React.PureComponent { // eslint-disable-line react/prefer-st
   render() {
     return (
       <div className='box'>
-        <form className='login' onSubmit={(evt) => this.handleSubmit(evt)}>
+        <form className='form' onSubmit={(evt) => this.handleSubmit(evt)}>
           <p>Authentification</p>
-          <div className='input'>
-            <span>Username</span>
+          <div className='field'>
+            <p>Username</p>
             <input type="text"
               placeholder="Username"
               value={this.state.username}
@@ -89,8 +89,8 @@ class Login extends React.PureComponent { // eslint-disable-line react/prefer-st
               />
             <p className="error">{this.state.errors.username}</p>
           </div>
-          <div className='input'>
-            <span>Password</span>
+          <div className='field'>
+            <p>Password</p>
             <input type="password"
               placeholder="Password"
               value={this.state.password}
@@ -98,6 +98,7 @@ class Login extends React.PureComponent { // eslint-disable-line react/prefer-st
               />
             <p className="error">{this.state.errors.password}</p>
           </div>
+
           <div className='submit'>
             <button
               disabled={this.state.username == '' || this.state.password == ''}>
