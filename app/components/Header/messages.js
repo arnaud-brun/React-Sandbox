@@ -6,6 +6,10 @@
 import { defineMessages } from 'react-intl';
 
 export default defineMessages({
+  authLink: {
+    id: 'app.components.Header.authLink',
+    defaultMessage: 'Authentication',
+  },
   homeLink: {
     id: 'app.components.Header.homeLink',
     defaultMessage: 'Home',
