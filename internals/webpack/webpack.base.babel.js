@@ -119,6 +119,7 @@ module.exports = (options) => ({
     alias: {
       // 'mapbox-gl$': path.join('/node_modules/', '/mapbox-gl/dist/mapbox-gl.js'),
       'mapbox-gl$': path.join(__dirname, '../../node_modules/mapbox-gl/dist/mapbox-gl.js'),
+      moment$: 'moment/moment.js',
     },
   },
   devtool: options.devtool,
