@@ -10,7 +10,7 @@
   align-self: flex-start;
   margin: 0 auto;
   width: 400px;
-  background-color: rgba(grey, 0.1);
+  background-color: #EDF0F3;
 }
 
 .form {
@@ -24,11 +24,36 @@
     margin: 0;
   }
 
-  .title {
+  .header {
     width: 100%;
     display: block;
     text-align: center;
     font-size: large;
+    padding: 0;
+    padding-top: 15px;
+  }
+}
+
+.header {
+  position: relative;
+
+  .title {
+    width: 100%;
+    padding-top: 5px;
+    margin-bottom: 10px;
+    font-size: x-large;
+  }
+  .status {
+    width: 100%;
+    height: 50px;
+    padding: 15px 0;
+
+    background-color: #ee1620;
+    color: #fcdcde;
+
+    font-size: medium;
+
+
   }
 }
 
@@ -36,8 +61,13 @@
   width: 80%;
   margin-left: 25px;
 
+  p {
+    margin-bottom: 0;
+  }
+
   input {
     width: 100%;
+    height: 30px;
     background-color: white;
     border: solid thin rgba(grey, 0.5);
   }
@@ -52,8 +82,8 @@
   button {
     width: 100%;
     height: 40px;
-    background-color: blue;
-    color: rgba(white, 0.5);
+    background-color: #006097;
+    color: #fff;
     border-radius: 5px;
     font-size: medium;
     font-weight: 600;

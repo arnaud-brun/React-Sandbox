@@ -27,7 +27,7 @@ class Signup extends React.PureComponent { // eslint-disable-line react/prefer-s
   constructor(props) {
     super(props);
     this.state = {
-      btnDisabled: false,
+      btnDisabled: true,
       email: '',
       username: '',
       password: '',
@@ -129,43 +129,63 @@ class Signup extends React.PureComponent { // eslint-disable-line react/prefer-s
   }
 
   renderStatus() {
-    return (
-      <div>Allright</div>
-    );
+    if (this.state.success) {
+      return;
+    }
+
+    const { email, username, password } = this.state.errors;
+    if (username !== '') {
+      return (
+        <div className="status">
+          {username}
+        </div>
+      );
+    }
+    if (email !== '') {
+      return (
+        <div className="status">
+          {email}
+        </div>
+      );
+    }
+    if (password !== '') {
+      return (
+        <div className="status">
+          {password}
+        </div>
+      );
+    }
+
+    return;
   }
 
   render() {
     return (
       <div className='box'>
         <form className='form' onSubmit={(evt) => this.handleSubmit(evt)}>
-          <p className="title">Sign up</p>
-          <div className="status">
-            {this.renderStatus}
-          </div>
-          <div className='field'>
-            <p>Email</p>
-            <input type="text"
-              placeholder="Email"
-              autoComplete='email'
-              value={this.state.email}
-              onChange={(evt) => this.handleChange(evt, 'email')}
-              />
-            <p className="error">{this.state.errors.email}</p>
+          <div className="header">
+            <div className="title">Sign up</div>
+            {this.renderStatus()}
           </div>
           <div className='field'>
             <p>Username</p>
             <input type="text"
-              placeholder="Username"
               autoComplete="username"
               value={this.state.username}
               onChange={(evt) => this.handleChange(evt, 'username')}
               />
-            <p className="error">{this.state.errors.username}</p>
+          </div>
+          <div className='field'>
+            <p>Email</p>
+            <input type="text"
+              autoComplete='email'
+              value={this.state.email}
+              onChange={(evt) => this.handleChange(evt, 'email')}
+              />
           </div>
           <div className='field'>
             <p>Password</p>
             <input type="password"
-              placeholder="Password"
               autoComplete="new-password"
               value={this.state.password}
               onChange={(evt) => this.handleChange(evt, 'password')}
@@ -174,11 +194,9 @@ class Signup extends React.PureComponent { // eslint-disable-line react/prefer-s
           <div className='field'>
             <p>Confirm password</p>
             <input type="password"
-              placeholder="Confirm password"
               value={this.state.passwordCheck}
               onChange={(evt) => this.handleChange(evt, 'passwordCheck')}
               />
-            <p className="error">{this.state.errors.password}</p>
           </div>
 
           <div className="field clause">
