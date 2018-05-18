@@ -75,30 +75,52 @@ class Login extends React.PureComponent { // eslint-disable-line react/prefer-st
     });
   }
 
+  renderStatus() {
+    if (this.state.success) {
+      return;
+    }
+
+    const { username, password } = this.state.errors;
+    if (username !== '') {
+      return (
+        <div className="status">
+          {username}
+        </div>
+      );
+    }
+    if (password !== '') {
+      return (
+        <div className="status">
+          {password}
+        </div>
+      );
+    }
+
+    return;
+  }
+
   render() {
     return (
       <div className='box'>
         <form className='form' onSubmit={(evt) => this.handleSubmit(evt)}>
-          <p>Authentification</p>
+          <div className="header">
+            <div className="title">Authentification</div>
+            {this.renderStatus()}
+          </div>
           <div className='field'>
             <p>Username</p>
             <input type="text"
-              placeholder="Username"
               value={this.state.username}
               onChange={(evt) => this.handleChange(evt, 'username')}
               />
-            <p className="error">{this.state.errors.username}</p>
           </div>
           <div className='field'>
             <p>Password</p>
             <input type="password"
-              placeholder="Password"
               value={this.state.password}
               onChange={(evt) => this.handleChange(evt, 'password')}
               />
-            <p className="error">{this.state.errors.password}</p>
           </div>
-
           <div className='submit'>
             <button
               disabled={this.state.username == '' || this.state.password == ''}>
@@ -106,9 +128,6 @@ class Login extends React.PureComponent { // eslint-disable-line react/prefer-st
             </button>
           </div>
         </form>
-        <div className="status">
-          {this.state.success && (<p>Login successful</p>)}
-        </div>
       </div>
     );
   }
