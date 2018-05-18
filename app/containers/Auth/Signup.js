@@ -22,6 +22,8 @@ import './styles.scss';
 
 import isEmail from 'validator/lib/isEmail';
 
+const PWD_LENGTH = 8;
+
 
 class Signup extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
   constructor(props) {
@@ -39,6 +41,11 @@ class Signup extends React.PureComponent { // eslint-disable-line react/prefer-s
         password: '',
       }
     };
+  }
+
+  isFormComplete() {
+    return (this.state.email !== '' && this.state.username !== ''
+        && this.state.password !== ''&& this.state.passwordCheck !== '') ;
   }
 
   validateForm() {
@@ -63,7 +70,7 @@ class Signup extends React.PureComponent { // eslint-disable-line react/prefer-s
     if (password != passwordCheck) {
       isFormValid = false;
       errors.password = 'Given passwords do not match';
-    } else if(password.length < 8) {
+    } else if(password.length < PWD_LENGTH) {
       isFormValid = false;
       errors.password = 'Given passwords are too short';
     }
@@ -90,6 +97,10 @@ class Signup extends React.PureComponent { // eslint-disable-line react/prefer-s
     else if (target=='passwordCheck') {
       this.setState({ passwordCheck: e.target.value.trim() });
     }
+
+    if (this.isFormComplete()) {
+      this.setState({ btnDisabled: false });
+    }
   }
 
   handleSubmit(e) {
@@ -98,7 +109,6 @@ class Signup extends React.PureComponent { // eslint-disable-line react/prefer-s
 
     if (!this.validateForm()) {
       this.setState({
-        btnDisabled: true,
         success: false,
       });
       return;
@@ -184,7 +194,7 @@ class Signup extends React.PureComponent { // eslint-disable-line react/prefer-s
               />
           </div>
           <div className='field'>
-            <p>Password</p>
+            <p>Password ({PWD_LENGTH} characters required)</p>
             <input type="password"
               autoComplete="new-password"
               value={this.state.password}
