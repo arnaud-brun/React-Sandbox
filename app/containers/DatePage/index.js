@@ -19,6 +19,9 @@ import saga from './saga';
 import messages from './messages';
 
 import RangeDatePicker from 'components/RangeDatePicker';
+import SingleDatePicker from 'components/SingleDatePicker';
+
+import './styles.scss';
 
 
 export class DatePage extends React.PureComponent { // eslint-disable-line react/prefer-stateless-function
@@ -26,7 +29,10 @@ export class DatePage extends React.PureComponent { // eslint-disable-line react
     return (
       <div>
         <FormattedMessage {...messages.header} />
-        <RangeDatePicker />
+        <div className="grid">
+          <div className="elt"><RangeDatePicker /></div>
+          <div className="elt"><SingleDatePicker /></div>
+        </div>
       </div>
     );
   }
