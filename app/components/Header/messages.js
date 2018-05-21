@@ -25,5 +25,9 @@ export default defineMessages({
   mapLink: {
     id: 'app.components.Header.mapLink',
     defaultMessage: 'Map',
+  },
+  dateLink: {
+    id: 'app.components.Header.dateLink',
+    defaultMessage: 'Date',
   }
 });

@@ -16,6 +16,16 @@ import { FormattedMessage } from 'react-intl';
 import messages from './messages';
 
 class Header extends React.Component { // eslint-disable-line react/prefer-stateless-function
+  /*
+  <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
+    <MenuItem eventKey={3.1}>Action</MenuItem>
+    <MenuItem eventKey={3.2}>Another action</MenuItem>
+    <MenuItem eventKey={3.3}>Something else here</MenuItem>
+    <MenuItem divider />
+    <MenuItem eventKey={3.4}>Separated link</MenuItem>
+  </NavDropdown>
+  */
+
   render() {
     return (
       <div>
@@ -40,13 +50,10 @@ class Header extends React.Component { // eslint-disable-line react/prefer-state
             <NavItem eventKey={3} href="/auth">
               <FormattedMessage {...messages.authLink} />
             </NavItem>
-            <NavDropdown eventKey={3} title="Dropdown" id="basic-nav-dropdown">
-              <MenuItem eventKey={3.1}>Action</MenuItem>
-              <MenuItem eventKey={3.2}>Another action</MenuItem>
-              <MenuItem eventKey={3.3}>Something else here</MenuItem>
-              <MenuItem divider />
-              <MenuItem eventKey={3.4}>Separated link</MenuItem>
-            </NavDropdown>
+            <NavItem eventKey={4} href="/date">
+              <FormattedMessage {...messages.dateLink} />
+            </NavItem>
+
           </Nav>
         </Navbar>
       </div>
